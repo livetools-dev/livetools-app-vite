@@ -62,11 +62,6 @@ jobs:
       - name: Read the Pages settings
         id: pages
         uses: actions/configure-pages@v5
-        with:
-          # Turns Pages on for this repository with the Actions source if it is
-          # not on yet, so a repository made from the template publishes on its
-          # first push with no setting touched. Proved 2026-09-26.
-          enablement: true
 
       # Lint, type check, a trial build and the duplicate-library check. A
       # failure here stops the run before anything is published.
@@ -152,7 +147,14 @@ jobs:
           fi
 
           title="The site did not update"
-          body="The site did not update after the latest change to main, so it still shows the previous version. The step that failed was \"$failed_step\". The details are in the run: $RUN_URL"
+          if [ "$failed_step" = "Read the Pages settings" ]; then
+            # The one setting a developer turns on per repository. A fresh
+            # copy of the template always hits this on its first push, and
+            # the default token cannot turn Pages on itself (tried 2026-09-26).
+            body="The site is not published yet because GitHub Pages is not switched on for this repository. A developer turns it on once: Settings, Pages, source \"GitHub Actions\". After that, the next change to main publishes, or this run can be started again from the Actions tab. The run: $RUN_URL"
+          else
+            body="The site did not update after the latest change to main, so it still shows the previous version. The step that failed was \"$failed_step\". The details are in the run: $RUN_URL"
+          fi
 
           existing=$(gh issue list --state open --search "\"$title\" in:title" --json number,title \
             --jq ".[] | select(.title == \"$title\") | .number" | head -n 1)
@@ -160,4 +162,27 @@ jobs:
             gh issue comment "$existing" --body "$body"
           else
             gh issue create --title "$title" --body "$body"
+          fi
+
+  # Runs only when the publish succeeded and closes the "site did not update"
+  # issue if one is open, so the person is not left with a stale report and
+  # the AI reading the issue list sees that the last publish worked.
+  close-report:
+    needs: [build, deploy]
+    if: success()
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Say that the site updated
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          title="The site did not update"
+          existing=$(gh issue list --state open --search "\"$title\" in:title" --json number,title \
+            --jq ".[] | select(.title == \"$title\") | .number" | head -n 1)
+          if [ -n "$existing" ]; then
+            gh issue close "$existing" --comment "The site updated with the latest change to main, so it now shows the current version. The run: $RUN_URL"
           fi
