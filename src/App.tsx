@@ -95,7 +95,7 @@ function Frame() {
             path="*"
             element={
               <Empty title="Nothing at this address">
-                <Link href={BASE} standalone>
+                <Link href="/" linkComponent={NavLink} standalone>
                   Back to the tools
                 </Link>
               </Empty>
