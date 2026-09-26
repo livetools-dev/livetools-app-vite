@@ -59,6 +59,26 @@ jobs:
       # the site is served from: "/<repository>" normally, and empty under a
       # custom domain (a CNAME file in public/). It is never worked out from
       # the repository name, because that is wrong under a custom domain.
+      # A repository fresh from the template starts publishing before anyone can
+      # reach its Pages setting, and the person cannot reach it at all. So this
+      # step waits up to ten minutes for the setting to appear (the new-app
+      # skill asks the ops repository to turn it on; a developer may be doing
+      # it by hand) instead of failing at once. It needs no more than the
+      # token already has: reading the setting is part of pages: write.
+      - name: Wait for Pages to be switched on
+        id: wait
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for i in $(seq 1 60); do
+            if gh api "repos/$GITHUB_REPOSITORY/pages" --jq .build_type 2>/dev/null | grep -qx workflow; then
+              echo "Pages is on."; exit 0
+            fi
+            sleep 10
+          done
+          echo "Pages is still not switched on for this repository after ten minutes."
+          exit 1
+
       - name: Read the Pages settings
         id: pages
         uses: actions/configure-pages@v5
@@ -103,6 +123,7 @@ jobs:
             Check out the code=${{ steps.checkout.outcome }}
             Set up Node=${{ steps.node.outcome }}
             Install=${{ steps.install.outcome }}
+            Wait for Pages to be switched on=${{ steps.wait.outcome }}
             Read the Pages settings=${{ steps.pages.outcome }}
             Run the checks=${{ steps.check.outcome }}
             Build for Pages=${{ steps.build.outcome }}
@@ -147,7 +168,7 @@ jobs:
           fi
 
           title="The site did not update"
-          if [ "$failed_step" = "Read the Pages settings" ]; then
+          if [ "$failed_step" = "Wait for Pages to be switched on" ] || [ "$failed_step" = "Read the Pages settings" ]; then
             # The one setting a developer turns on per repository. A fresh
             # copy of the template always hits this on its first push, and
             # the default token cannot turn Pages on itself (tried 2026-09-26).
