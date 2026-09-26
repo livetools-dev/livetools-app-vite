@@ -38,14 +38,21 @@ In this order, so the site publishes on its first push and no setting is ever le
 
 1. `gh repo create livetools-dev/<name> --public --description "<the purpose, one line>"`.
    Empty: no README, no first commit, nothing that would push.
-2. `gh api -X POST repos/livetools-dev/<name>/pages -f build_type=workflow`. This is the
-   Pages setting with the "GitHub Actions" source, on before any files exist.
-3. `gh api -X PATCH repos/livetools-dev/<name> -f has_wiki=false -f has_projects=false`.
+2. Turn Pages on with the "GitHub Actions" source. Your session's GitHub connection cannot do
+   this itself (the Claude app has no Pages right), so ask the design-system repository to do
+   it, which has a token that can:
+   `gh api repos/livetools-dev/livetools-design-system/dispatches -f event_type=pages-on -f "client_payload[repo]=<name>"`
+   Then wait for it: poll `gh api repos/livetools-dev/<name>/pages --jq .build_type` every
+   ten seconds for up to two minutes until it answers `workflow`.
+3. `gh api -X PATCH repos/livetools-dev/<name> -f has_wiki=false -f has_projects=false`
+   (harmless if refused).
 
-If step 1 or 2 is refused for lack of permission, stop and tell the person in plain words that
-a developer needs to create the app's repository for them, and give the developer (in your
-reply, not to the person) the three commands above and the next section. Do not fall back to
-"Use this template" here, because that path publishes with a red first run.
+If step 1 is refused, stop and tell the person in plain words that a developer needs to create
+the app's repository for them, and give the developer (in your reply, not to the person) the
+commands above and the next section. If step 2 has not answered `workflow` after two minutes,
+carry on with steps 3 to 5 anyway, and in step 5 handle the failed first publish as that section
+says: the repository's issue names the one setting, and a developer turns it on. Do not fall
+back to "Use this template" here.
 
 ## 3. Put the template in it, without the example screens
 
