@@ -11,25 +11,13 @@ of this file follows from that. Read "Talking to the person" before your first m
 ## If this session is on the template itself
 
 If the repository you are in is `livetools-dev/livetools-app-vite` (the template, not an app made
-from it) and the person asks for a new app, make the app for them in this order, so the site
-publishes on its first push and nothing needs switching on afterwards:
-
-1. Ask them what the app is for and what to call it, if they have not said. The repository
-   name is that name in lower case with hyphens.
-2. Create an empty public repository with that name in `livetools-dev` (`gh repo create`, or
-   the GitHub API). Empty: no README, no first commit.
-3. Turn Pages on for it with the "GitHub Actions" source, before any files go in
-   (`gh api -X POST repos/livetools-dev/<name>/pages -f build_type=workflow`).
-4. Copy every file of this template except `.git` into a fresh clone of the new repository,
-   commit them as "The app, made from the Livetools Vite template", and push to `main`.
-5. Wait for the workflow to finish, open the site at the address the Pages setting shows, and
-   tell the person the address and that their app is live with the example screens.
-
-If step 2 or 3 is refused for lack of permission, say so plainly: the person then presses
-"Use this template" on this repository's page instead, and a developer turns on Pages
-(Settings, Pages, source "GitHub Actions"); the first run fails until that setting is on, and
-opens an issue saying so. Then continue in the new repository, not here: nothing in the
-template itself changes for one app.
+from it) and the person asks for a new app, use the `new-app` skill in `.claude/skills/new-app/`.
+It asks the person two questions (the name, and what the app is for), creates an empty
+repository, turns Pages on before any files exist so the site publishes on its first push, puts
+the template in without the example screens, builds the first screen from the parts the purpose
+needs, and hands back the address. The same skill can be installed outside this repository and
+run from anywhere; it fetches the template itself. Nothing in the template changes for one app:
+continue in the new repository.
 
 ## What may not be built here
 
