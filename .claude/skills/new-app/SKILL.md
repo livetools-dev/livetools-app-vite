@@ -1,11 +1,11 @@
 ---
 name: new-app
-description: Make a new Livetools app from the livetools-app-vite template for the person you are talking to. Use it whenever the person asks for a new app, a new tool, a new site or "something for" a job, in any words, from any repository or from none, and whenever they type /new-app. It asks two questions, has the ops repository create and set up the repository, builds the first screen from the design system's parts, and hands back the address. Never use it to change an app that already exists; there, just build what is asked.
+description: Make a new Livetools app from the livetools-app-vite-template template for the person you are talking to. Use it whenever the person asks for a new app, a new tool, a new site or "something for" a job, in any words, from any repository or from none, and whenever they type /new-app. It asks two questions, has the ops repository create and set up the repository, builds the first screen from the design system's parts, and hands back the address. Never use it to change an app that already exists; there, just build what is asked.
 ---
 
 # Make a new app
 
-The person wants an app of their own, made from the template `livetools-dev/livetools-app-vite`
+The person wants an app of their own, made from the template `livetools-dev/livetools-app-vite-template`
 (public on GitHub). They do not read code and never see a terminal, a file or a setting: you do
 every step, and every message to them is about what is on the screen.
 

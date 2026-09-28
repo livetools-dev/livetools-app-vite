@@ -1,6 +1,6 @@
 # This app
 
-This is a Livetools app made from the `livetools-app-vite` template: a small, public web app
+This is a Livetools app made from the `livetools-app-vite-template` template: a small, public web app
 that a member of staff builds by talking to you, published to GitHub Pages. It is built with
 Vite 8, React 19, TypeScript and React Router 7, and every screen is made from the parts in
 `@livetools/ui`, the Livetools Design System's React package, and from nothing else.
@@ -10,7 +10,7 @@ of this file follows from that. Read "Talking to the person" before your first m
 
 ## If this session is on the template itself
 
-If the repository you are in is `livetools-dev/livetools-app-vite` (the template, not an app made
+If the repository you are in is `livetools-dev/livetools-app-vite-template` (the template, not an app made
 from it) and the person asks for a new app, use the `new-app` skill in `.claude/skills/new-app/`.
 It asks the person two questions (the name, and what the app is for), creates an empty
 repository, turns Pages on before any files exist so the site publishes on its first push, puts
