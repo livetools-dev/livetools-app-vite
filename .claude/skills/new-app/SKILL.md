@@ -126,13 +126,20 @@ supplier or brand names allowed in it are Evolute, NS Tools, Palbit and PH Horn.
 Run `npm run check` and fix every finding by using the right part. Commit as
 "<Name>: the first screen" and push to `main`. That push publishes the app.
 
-## 5. Wait for the site, then tell the person
+## 5. Wait for the publish on GitHub, then tell the person
 
-Every twenty seconds, for up to fifteen minutes, fetch `https://livetools-dev.github.io/<name>/`
-and stop when it answers 200 with the app's title in the page (the template's publish also had
-to wait for the Pages setting, so the first minutes may answer 404).
+Do not fetch the site's address to see whether it is up. A browser session's network may block
+addresses outside GitHub, and a blocked fetch looks exactly like a site that is not showing.
+GitHub's own record of the publish is the truth, and the session's GitHub tool can read it.
 
-When it answers, tell the person, in their words:
+With that tool (the GitHub connector, or `gh run list` where it exists), look at the latest run
+of the workflow "Publish to GitHub Pages" in `livetools-dev/<name>`, every thirty seconds for up
+to fifteen minutes, until it has finished. Its first run started when the repository was made
+and may still be waiting for the Pages setting; the run your push started is the one that
+matters. A finished run with success means the site is live at
+`https://livetools-dev.github.io/<name>/`.
+
+When it has succeeded, tell the person, in their words:
 
 - the address, and that it is live;
 - what the first screen shows and does, in screen terms;
@@ -141,10 +148,11 @@ When it answers, tell the person, in their words:
 
 No file, folder, command, library or setting is named in that message.
 
-If fifteen minutes pass with no site: tell the person the app is built and in its place but is
-not showing yet, that a developer has been asked, and say in your reply, plainly, for the
-developer: the repository `livetools-dev/<name>` may have an issue titled "The site did not
-update" saying why; if not, look at its latest "Publish to GitHub Pages" run.
+If the run failed, or fifteen minutes pass with none finished: read the issue titled "The site
+did not update" in the repository with the same tool, fix what it names if it is in the files you
+may edit, push, and wait again. Otherwise tell the person the app is built and in its place but
+is not showing yet and that a developer has been asked, and say in your reply, plainly, for the
+developer, what the issue or the run says.
 
 From here on, work in the new repository (`app`), never in the template, and delete the `ops`
 folder.
