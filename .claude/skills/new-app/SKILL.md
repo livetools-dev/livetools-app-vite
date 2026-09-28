@@ -16,6 +16,15 @@ workflow in the private repository `livetools-dev/livetools-ops`, asked for by p
 and this session only builds. Use plain git and plain web fetches throughout, even on a desktop
 where `gh` exists, so the steps behave the same everywhere.
 
+**Repository access.** This session can only clone a private repository, or push to any
+repository, once that repository has been added to the session. In Claude Code on the web that
+is the "add repository" action (the one that connects a repository to this session); on a
+desktop it is whatever login git already has. So before each clone below, add the repository
+to the session first, then clone with the address the session gives it. Do not try an
+anonymous clone first and fall back; go straight to adding it, because a plain clone of the
+ops repository is always refused (it is private) and a plain clone of the new repository
+cannot be pushed to.
+
 ## 1. Two questions, then no more
 
 Ask these two, together, in one message, and nothing else:
@@ -44,8 +53,10 @@ open next time?"
 
 ## 2. Ask the ops repository to make the repository
 
+Add `livetools-dev/livetools-ops` to the session (it is private), then:
+
 ```
-git clone --depth 1 https://github.com/livetools-dev/livetools-ops.git ops
+git clone --depth 1 <the address the session gives for livetools-ops> ops
 ```
 
 Check that `ops/requests/<name>.md` does not already exist; if it does, the name is taken:
@@ -72,8 +83,10 @@ person the same, and give the developer the request file's contents to push by h
 
 ## 3. Take the example screens out
 
+Add `livetools-dev/<name>` to the session (you will push to it), then:
+
 ```
-git clone https://github.com/livetools-dev/<name>.git app
+git clone <the address the session gives for it> app
 ```
 
 Read `app/CLAUDE.md` now; everything in it holds for the new app from its first screen. The
