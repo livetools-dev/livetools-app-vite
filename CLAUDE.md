@@ -89,7 +89,7 @@ The rules, in the form they take in this app:
 - Blue acts, red is identity and danger. A positive action is a blue `Button` at every size.
   `Button` has no brand-red variant, so a red "Save" cannot be typed; do not try to get one
   through CSS. Red is the logotype and destroying things.
-- Colour never carries meaning alone. `Badge`, `Alert`, `State` and status items in `Select`
+- Colour never carries meaning alone. `Badge`, `Alert`, `StatusIndicator` and status items in `Select`
   carry an icon and words as well as a colour, and a badge with no icon is a type error. A
   delete always shows an icon and the word.
 - Severity picks the colour, and how long the message stays true picks the part. `Alert` is a
@@ -109,7 +109,7 @@ The rules, in the form they take in this app:
   metric and imperial. Dates and times are `DateField` and `TimeField`, never a browser date
   input, because the value must always be unambiguous. Files are `FileDrop`, which collects and
   checks the files; sending them is the app's job.
-- A set of bars is a `MeasureSet` with a `scale` sentence and `Measure`s inside it, because a bar
+- A set of bars is a `BarFigureSet` with a `scale` sentence and `BarFigure`s inside it, because a bar
   means nothing without saying what it is scaled against. A chart reads the `--lt-chart-*` tokens
   from the app's CSS, takes SVG colours from `chartColour()`, texture from `chartMarkClass()` and
   legend keys from `ChartKey`.

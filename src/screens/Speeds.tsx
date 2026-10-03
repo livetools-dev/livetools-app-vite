@@ -7,8 +7,8 @@ import { useState } from "react";
 import {
   Form,
   FormGrid,
-  Measure,
-  MeasureSet,
+  BarFigure,
+  BarFigureSet,
   NumberField,
   Prose,
   Readout,
@@ -150,12 +150,12 @@ export function Speeds() {
       <Prose>
         <h2>Recommended cutting speed{materialData === undefined ? "" : `, ${materialData.label.toLowerCase()}`}</h2>
       </Prose>
-      <MeasureSet scale="Bars scaled against the highest recommended cutting speed for this material.">
+      <BarFigureSet scale="Bars scaled against the highest recommended cutting speed for this material.">
         {recommended.map(({ supplier, speed }) =>
           speed === null ? (
-            <Measure key={supplier} label={supplier} value={null} />
+            <BarFigure key={supplier} label={supplier} value={null} />
           ) : speed === highest ? (
-            <Measure
+            <BarFigure
               key={supplier}
               label={supplier}
               value={formatFigure(speed, "speed", system)}
@@ -164,7 +164,7 @@ export function Speeds() {
               best="Highest recommended"
             />
           ) : (
-            <Measure
+            <BarFigure
               key={supplier}
               label={supplier}
               value={formatFigure(speed, "speed", system)}
@@ -173,7 +173,7 @@ export function Speeds() {
             />
           ),
         )}
-      </MeasureSet>
+      </BarFigureSet>
     </Stack>
   );
 }

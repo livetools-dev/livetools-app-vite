@@ -1,7 +1,7 @@
 // The machines on the floor: the seed the Machines screen starts from.
 // Example data. Travels are in millimetres, spindle speed in rpm.
 
-import type { StateValue } from "@livetools/ui";
+import type { StatusIndicatorValue } from "@livetools/ui";
 
 export type Control = "Fanuc" | "Siemens" | "Heidenhain" | "Haas";
 
@@ -13,7 +13,7 @@ export type Machine = {
   travelY: number;
   travelZ: number;
   topSpindle: number;
-  state: StateValue;
+  state: StatusIndicatorValue;
   condition: string;
   staged?: string;
 };

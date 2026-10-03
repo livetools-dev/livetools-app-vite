@@ -12,7 +12,7 @@ import {
   Select,
   Specs,
   Stack,
-  State,
+  StatusIndicator,
   Tabs,
   Wizard,
   toast,
@@ -51,7 +51,7 @@ function machineSpecs(machine: Machine, system: UnitSystem): readonly SpecsItem[
 }
 
 function MachineCard({ machine, system }: { machine: Machine; system: UnitSystem }) {
-  const actions = <State state={machine.state}>{machine.condition}</State>;
+  const actions = <StatusIndicator state={machine.state}>{machine.condition}</StatusIndicator>;
   const body = <Specs bordered items={machineSpecs(machine, system)} />;
   return machine.staged === undefined ? (
     <Card as="li" title={machine.name} titleAs="h3" actions={actions}>

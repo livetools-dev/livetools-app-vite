@@ -8,7 +8,7 @@ import { BrowserRouter, Link as RouterLink, Route, Routes, useLocation } from "r
 import {
   Alert,
   Button,
-  Empty,
+  EmptyState,
   Link,
   Logotype,
   Navigation,
@@ -94,11 +94,11 @@ function Frame() {
           <Route
             path="*"
             element={
-              <Empty title="Nothing at this address">
+              <EmptyState title="Nothing at this address">
                 <Link href="/" linkComponent={NavLink} standalone>
                   Back to the tools
                 </Link>
-              </Empty>
+              </EmptyState>
             }
           />
         </Routes>
